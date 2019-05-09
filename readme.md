@@ -1,6 +1,6 @@
 # Wine Pyinstaller
 
-Compile python scripts with Pyinstaller into 32 bit windows executables on Ubuntu with Wine.
+Compile Python 3.x scripts with Pyinstaller into 32 bit Windows executables on Ubuntu with Wine.
 
 ## Build Image
 
