@@ -44,7 +44,8 @@ startVirtualFrameBuffer() {
 }
 
 # uncomment to disable mono and gecko install popup
-# export WINEDLLOVERRIDES="mscoree,mshtml="
+export WINEDLLOVERRIDES="mscoree,mshtml="
+
 startVirtualFrameBuffer
 autorespond &
 winecfg

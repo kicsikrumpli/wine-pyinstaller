@@ -1,11 +1,6 @@
-FROM i386/ubuntu
+# build wine
+FROM i386/ubuntu as winebuild
 LABEL maintainer="kicsikrumpli@gmail.com"
-
-# default for X Virtual Frame Buffer
-ARG DISP=:1
-ENV DISPLAY=${DISPLAY}
-
-RUN echo "DISPLAY: ${DISPLAY}"
 
 # build:
 # external X server at build time: --build-arg DISPLAY=host.docker.internal:0
@@ -17,17 +12,20 @@ RUN sed -i '/deb-src/s/^# //' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y flex \
     bison \
     gcc \
-    build-essential \
-    xdotool \
-    xvfb
+    build-essential
 RUN apt-get build-dep -y wine
 
-# copy and unpack wine source
+# copy, unpack, build wine source
 ADD wine-4.7.tar.xz /
 WORKDIR /wine-4.7
-
-# build
 RUN ./configure && make && make install
+
+RUN apt-get update && apt-get install -y xdotool xvfb
+
+# default for X Virtual Frame Buffer
+ARG DISPLAY=:1
+ENV DISPLAY=${DISPLAY}
+RUN echo "DISPLAY: ${DISPLAY}"
 
 # winecfg
 WORKDIR /root
@@ -51,4 +49,4 @@ RUN ./winew.sh pip3 install pyinstaller
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
-ENTRYPOINT [ "./entrypoint.sh" ]
+# ENTRYPOINT [ "./entrypoint.sh" ]
