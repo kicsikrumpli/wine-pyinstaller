@@ -18,7 +18,7 @@ To observe build time windows on external X server:
 docker build -t kicsikrumpli/wine-pyinstaller:latest .
 ````
 
-## Build 32 bit windows python apps
+## Build 32-bit Windows Python Apps
 
 - bind mount current directory with script to `/src/`
 - assumes presence of `requirements.txt`
@@ -28,4 +28,10 @@ docker build -t kicsikrumpli/wine-pyinstaller:latest .
 
 ````bash
 docker run -it -v $(pwd):/src kicsikrumpli/wine-pyinstaller --clean --onefile my_python_script.py
+````
+
+## Run Bash in Container
+
+````bash
+docker run -it kicsikrumpli/wine-pyinstaller --bash
 ````
