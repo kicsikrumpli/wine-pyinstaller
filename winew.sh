@@ -1,5 +1,4 @@
 #! /bin/bash
-
 wine "$@"
 
 while (( $(ps | grep wineserver | grep -vc grep) != 0 )); do

@@ -20,7 +20,7 @@ waitAndEnter() {
     local window
     while [[ -z "$window" ]]; do
         sleep 10
-        echo "waiting for $title"
+        echo "waiting for $title..."
         set +e
         window=`xdotool search --name "$title"`
         set -e
@@ -28,7 +28,7 @@ waitAndEnter() {
 
     echo "found: $window"
 
-    xdotool windowfocus $window
+    xdotool windowfocus --sync $window
     xdotool key Return
 }
 
@@ -43,7 +43,7 @@ startVirtualFrameBuffer() {
     fi
 }
 
-# uncomment to disable mono and gecko install popup
+# comment to enable mono and gecko install popup
 export WINEDLLOVERRIDES="mscoree,mshtml="
 
 startVirtualFrameBuffer
@@ -51,6 +51,12 @@ autorespond &
 winecfg
 
 while (( $(ps | grep wineserver | grep -vc grep) != 0 )); do
-    echo "waiting for wineserver to terminate"
+    echo "waiting for wineserver to terminate..."
     sleep 5
 done
+
+echo "Installing Python..."
+./winew.sh python-3.7.3.exe /quiet InstallAllUsers=1 PrependPath=1
+
+echo "Installing Pyinstaller..."
+./winew.sh pip3 install pyinstaller

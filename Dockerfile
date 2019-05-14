@@ -28,25 +28,18 @@ ENV DISPLAY=${DISPLAY}
 RUN echo "DISPLAY: ${DISPLAY}"
 
 # winecfg
-WORKDIR /root
-COPY winecfg-auto.sh .
-RUN chmod +x winecfg-auto.sh
-RUN ./winecfg-auto.sh
-
-# wine wrapper
 WORKDIR /root/.wine/drive_c
+COPY python-3.7.3.exe .
+
+COPY config.sh .
+RUN chmod +x config.sh
+
 COPY winew.sh .
 RUN chmod +x winew.sh
 
-# install python 3.7
-COPY python-3.7.3.exe .
-RUN ./winew.sh python-3.7.3.exe /quiet InstallAllUsers=1 PrependPath=1
+RUN ./config.sh
 
-# install pyinstaller
-RUN ./winew.sh pip3 install pyinstaller
-
-# copy entrypoint.sh
+# entrypoint
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
-
-# ENTRYPOINT [ "./entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
